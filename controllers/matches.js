@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
     res.send({ matches })
   })
   .catch(err => {
-    res.send({ matches: [] })
+    res.status(500).send({ matches: [] })
   })
 })
 
@@ -32,6 +32,21 @@ router.post('/', (req, res) => {
   .catch(err => {
     console.log('err', err)
     res.status(500).send({ message: 'Ugh this pigeon is stuck in the fence'})
+  })
+})
+
+router.get('/potentials', (req, res) => {
+  console.log('getting potential matches for', req.user._id)
+  db.User.find({
+    user: {$ne: req.user._id}
+  })
+  .then(users => {
+    console.log('success', users)
+    res.send({ users })
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).send({ users: [] })
   })
 })
 
