@@ -18,6 +18,10 @@ let userSchema = new mongoose.Schema({
     required: true,
     minlength: 1
   },
+  type: {
+    type: String,
+    default: 'Squire'
+  },
   pigeon: {
     type: String,
     required: true,
@@ -31,7 +35,9 @@ let userSchema = new mongoose.Schema({
     minlength: 4,
     maxlength: 100
   },
+  bio: String,
   pic: String,
+  seeking: String,
   matches: [matchSchema]
 })
 
