@@ -24,7 +24,8 @@ let userSchema = new mongoose.Schema({
     unique: true,
     minlength: 2
   },
-  password: {
+  age: Number,
+  pigeon_cage_key: {
     type: String,
     required: true,
     minlength: 4,
@@ -34,27 +35,27 @@ let userSchema = new mongoose.Schema({
   matches: [matchSchema]
 })
 
-// Use bcrypt to hash password
+// Use bcrypt to hash pigeon_cage_key
 userSchema.pre('save', function (next) {
   if (this.isNew) {
     // New, as opposed to modified
-    this.password = bcrypt.hashSync(this.password, 12)
+    this.pigeon_cage_key = bcrypt.hashSync(this.pigeon_cage_key, 12)
   }
   next()
 })
 
-// Ensure that password doesn't get sent with the rest of the data
+// Ensure that pigeon_cage_key doesn't get sent with the rest of the data
 userSchema.set('toJSON', {
   transform: (doc, user) => {
-    delete user.password
+    delete user.pigeon_cage_key
     delete user.__v
     return user
   }
 })
 
-// Create a helper function to compare the password hashes
-userSchema.methods.isValidPassword = function (typedPassword) {
-  return bcrypt.compareSync(typedPassword, this.password)
+// Create a helper function to compare the pigeon_cage_key hashes
+userSchema.methods.isValidCageKey = function (typedpigeon_cage_key) {
+  return bcrypt.compareSync(typedpigeon_cage_key, this.pigeon_cage_key)
 }
 
 module.exports = mongoose.model('User', userSchema)

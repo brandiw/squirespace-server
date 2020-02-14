@@ -10,12 +10,12 @@ router.post('/login', (req, res) => {
   db.User.findOne({ pigeon: req.body.pigeon })
   .then(user => {
     // Make sure the user exists and has a password
-    if (!user || !user.password) {
+    if (!user || !user.pigeon_cage_key) {
       return res.status(404).send({ message: 'Sorry, but your pigeon is in another castle...' })
     }
 
     // Good - they exist. Now we check the password
-    if (!user.isValidPassword(req.body.password)) {
+    if (!user.isValidCageKey(req.body.pigeon_cage_key)) {
       return res.status(401).send({ message: 'Pigeon blown away in storm' })
     }
 
