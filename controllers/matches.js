@@ -2,29 +2,36 @@ let db = require('../models')
 let router = require('express').Router()
 
 router.get('/', (req, res) => {
-  res.send({ dogs: req.user.dogs })
+  console.log('getting matches for', req.user._id)
+  db.Match.find({
+    user: req.user._id
+  })
+  .populate('matched')
+  .then(matches => {
+    console.log('success', matches)
+    res.send({ matches })
+  })
+  .catch(err => {
+    res.send({ matches: [] })
+  })
 })
 
 // Make matches?
 router.post('/', (req, res) => {
   console.log('matches post route', req.body)
-  // First get the user from the DB using the id in req.user
-  db.User.findOne(req.user.id)
-  .then(user => {
-    // Update matches
-
-    // Save the changes to the DB
-    user.save().then(() => {
-      res.send({ matches: user.matches })
-    })
-    .catch(err => {
-      console.log('Aww suck', err)
-      res.status(503).send({ message: 'Error saving document' })
-    })
+  // Update matches
+  db.Match.create({
+    user: req.user._id,
+    matched: req.body.matchedUser,
+    swipe: req.body.swipe
+  })
+  .then(() => {
+    console.log('success')
+    res.send({ message: 'Success' })
   })
   .catch(err => {
-    console.log('Server error', err)
-    res.status(500).send({ message: 'Server error' })
+    console.log('err', err)
+    res.status(500).send({ message: 'Ugh this pigeon is stuck in the fence'})
   })
 })
 

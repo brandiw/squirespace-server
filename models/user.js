@@ -1,17 +1,6 @@
 let bcrypt = require('bcryptjs')
 let mongoose = require('mongoose')
 
-let matchSchema = new mongoose.Schema({
-  matchedUser: {
-    ref: 'User',
-    type: mongoose.Schema.Types.ObjectId
-  },
-  swipe: {
-    type: String,
-    default: 'Unmatched'
-  }
-})
-
 let userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -37,8 +26,7 @@ let userSchema = new mongoose.Schema({
   },
   bio: String,
   pic: String,
-  seeking: String,
-  matches: [matchSchema]
+  seeking: String
 })
 
 // Use bcrypt to hash pigeon_cage_key
