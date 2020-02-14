@@ -1,36 +1,37 @@
 let bcrypt = require('bcryptjs')
 let mongoose = require('mongoose')
 
-let dogSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
+let matchSchema = new mongoose.Schema({
+  matchedUser: {
+    ref: 'User',
+    type: mongoose.Schema.Types.ObjectId
   },
-  breed: String,
-  age: Number
+  swipe: {
+    type: String,
+    default: 'Unmatched'
+  }
 })
 
 let userSchema = new mongoose.Schema({
-  firstname: {
+  name: {
     type: String,
     required: true,
     minlength: 1
   },
-  lastname: String,
-  email: {
+  pigeon: {
     type: String,
     required: true,
     unique: true,
-    minlength: 5
+    minlength: 2
   },
   password: {
     type: String,
     required: true,
-    minlength: 8,
+    minlength: 4,
     maxlength: 100
   },
-  profileUrl: String,
-  dogs: [dogSchema]
+  pic: String,
+  matches: [matchSchema]
 })
 
 // Use bcrypt to hash password
@@ -39,7 +40,6 @@ userSchema.pre('save', function (next) {
     // New, as opposed to modified
     this.password = bcrypt.hashSync(this.password, 12)
   }
-
   next()
 })
 

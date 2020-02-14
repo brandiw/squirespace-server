@@ -7,16 +7,16 @@ let router = require('express').Router()
 router.post('/login', (req, res) => {
   console.log(req.body)
   // Find the user
-  db.User.findOne({ email: req.body.email })
+  db.User.findOne({ pigeon: req.body.pigeon })
   .then(user => {
     // Make sure the user exists and has a password
     if (!user || !user.password) {
-      return res.status(404).send({ message: 'User not found!' })
+      return res.status(404).send({ message: 'Sorry, but your pigeon is in another castle...' })
     }
 
     // Good - they exist. Now we check the password
     if (!user.isValidPassword(req.body.password)) {
-      return res.status(401).send({ message: 'Invalid credentials' })
+      return res.status(401).send({ message: 'Pigeon blown away in storm' })
     }
 
     // Good user - issue a token and send it
@@ -27,7 +27,7 @@ router.post('/login', (req, res) => {
   })
   .catch(err => {
     console.log('Error in POST /auth/login', err)
-    res.status(503).send({ message: 'Database or server-side error' })
+    res.status(503).send({ message: 'Pigeon is asleep' })
   })
 })
 
@@ -35,12 +35,12 @@ router.post('/login', (req, res) => {
 router.post('/signup', (req, res) => {
   console.log(req.body)
   // Look up the user (make sure they aren't a duplicate)
-  db.User.findOne({ email: req.body.email })
+  db.User.findOne({ pigeon: req.body.pigeon })
   .then(user => {
     // If the user exists, do NOT let them create another account!
     if (user) {
       // Bad - this is signup, they shouldn't already exist
-      return res.status(409).send({ message: 'Email address in use!' })
+      return res.status(409).send({ message: 'Pigeon already in use!' })
     }
 
     // Good - the user doesn't exist :)
@@ -78,7 +78,7 @@ router.get('/profile', (req, res) => {
   // NOTE: This is the user data from the time the token was issued
   // WARNING: If you update the user info those changes will not be reflected here
   // To avoid this, reissue a token when you update user data
-  res.send({ message: 'Secret message for logged in people ONLY!' })
+  res.send({ message: 'Secret message for pigeon owners ONLY!' })
 })
 
 module.exports = router

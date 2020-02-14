@@ -1,3 +1,3 @@
-# MERN Auth Boilerplate (Server-side)
+# Squire Space (Server-side)
 
-Master branch contains starter code
+A medieval inspired version of Tinder for General Assembly's Hackathon 02/2020.
